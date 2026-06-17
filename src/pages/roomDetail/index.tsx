@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { View, Text, Image, ScrollView, Swiper, SwiperItem, Button } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
-import { rooms, generateCalendar, pricingRules } from '@/data/rooms';
+import { rooms, generateCalendar, pricingRules, calculateStayTotal, hasBookedDatesInRange } from '@/data/rooms';
 import { formatPrice, getDaysDiff, showToast } from '@/utils';
 import { useStore } from '@/store/useStore';
-import type { RoomCalendar } from '@/types';
+import type { RoomCalendar, Room } from '@/types';
 
 const facilityIcons: Record<string, string> = {
   '独立卫浴': '🚿',
@@ -33,24 +33,24 @@ const RoomDetailPage: React.FC = () => {
   const { selectedRoom, setSelectedRoom, setCheckInDate, setCheckOutDate, setGuests } = useStore();
   const roomId = router.params.id;
 
-  const [room, setRoom] = useState<any>(null);
+  const [room, setRoom] = useState<Room | null>(null);
   const [currentImage, setCurrentImage] = useState(0);
   const [calendar, setCalendar] = useState<RoomCalendar[]>([]);
   const [currentMonth, setCurrentMonth] = useState({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 });
   const [checkInDate, setCheckInDateLocal] = useState('');
   const [checkOutDate, setCheckOutDateLocal] = useState('');
 
+  const loadCalendar = useCallback((year: number, month: number, basePrice: number) => {
+    const cal = generateCalendar(year, month, basePrice);
+    setCalendar(cal);
+  }, []);
+
   useEffect(() => {
     const foundRoom = rooms.find(r => r.id === roomId) || rooms[0];
     setRoom(foundRoom);
     setSelectedRoom(foundRoom);
-    loadCalendar(currentMonth.year, currentMonth.month);
-  }, [roomId, currentMonth]);
-
-  const loadCalendar = (year: number, month: number) => {
-    const cal = generateCalendar(year, month);
-    setCalendar(cal);
-  };
+    loadCalendar(currentMonth.year, currentMonth.month, foundRoom.price);
+  }, [roomId, currentMonth, loadCalendar, setSelectedRoom]);
 
   const handlePrevMonth = () => {
     let { year, month } = currentMonth;
@@ -88,11 +88,7 @@ const RoomDetailPage: React.FC = () => {
         return;
       }
 
-      const startIdx = calendar.findIndex(d => d.date === checkInDate);
-      const endIdx = calendar.findIndex(d => d.date === date.date);
-      const hasBooked = calendar.slice(startIdx, endIdx + 1).some(d => d.status === 'booked');
-
-      if (hasBooked) {
+      if (hasBookedDatesInRange(checkInDate, date.date)) {
         showToast('所选日期范围内有已预订日期', 'none');
         return;
       }
@@ -119,15 +115,21 @@ const RoomDetailPage: React.FC = () => {
     return classnames(classes);
   };
 
-  const calculateTotalPrice = () => {
-    if (!checkInDate || !checkOutDate) return 0;
-    const days = getDaysDiff(checkInDate, checkOutDate);
-    return days * (room?.price || 0);
-  };
+  const priceCalculation = useMemo(() => {
+    if (!checkInDate || !checkOutDate || !room) {
+      return { total: 0, nights: 0, dailyPrices: [] };
+    }
+    return calculateStayTotal(room.price, checkInDate, checkOutDate);
+  }, [checkInDate, checkOutDate, room]);
 
   const handleBookNow = () => {
     if (!checkInDate || !checkOutDate) {
       showToast('请选择入住和离店日期', 'none');
+      return;
+    }
+
+    if (hasBookedDatesInRange(checkInDate, checkOutDate)) {
+      showToast('所选日期范围内有已预订日期', 'none');
       return;
     }
 
@@ -350,14 +352,14 @@ const RoomDetailPage: React.FC = () => {
             <>
               <Text className={styles.selectedDates}>
                 {checkInDate.slice(5)} 至 {checkOutDate.slice(5)}
-                （{getDaysDiff(checkInDate, checkOutDate)}晚）
+                （{priceCalculation.nights}晚）
               </Text>
-              <Text className={styles.selectedPrice}>¥{formatPrice(calculateTotalPrice())}</Text>
+              <Text className={styles.selectedPrice}>¥{formatPrice(priceCalculation.total)}</Text>
             </>
           ) : (
             <>
               <Text className={styles.selectedDates}>请选择入住日期</Text>
-              <Text className={styles.selectedPrice}>¥{formatPrice(room.price)}起</Text>
+              <Text className={styles.selectedPrice}>¥{formatPrice(room?.price || 0)}起</Text>
             </>
           )}
         </View>

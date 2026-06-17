@@ -54,7 +54,8 @@ const BookingPage: React.FC = () => {
   const loadCalendar = useCallback(() => {
     const year = currentMonth.year();
     const month = currentMonth.month() + 1;
-    const data = generateCalendar(year, month);
+    const basePrice = rooms[0]?.price || 388;
+    const data = generateCalendar(year, month, basePrice);
     setCalendarData(data);
     console.log('[Booking] Calendar loaded', { year, month, count: data.length });
   }, [currentMonth]);

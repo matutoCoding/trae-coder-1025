@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 import type { Order, Room, RoomCalendar } from '@/types';
+import { orders as mockOrders } from '@/data/orders';
+
+const STORAGE_KEY = 'tulou_homestay_orders';
 
 interface BookingState {
   selectedRoom: Room | null;
@@ -34,13 +37,37 @@ interface UserState {
 
 interface AppState extends BookingState, OrderState, UserState {}
 
+const loadOrders = (): Order[] => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    }
+  } catch (e) {
+    console.warn('[Store] Failed to load orders from storage:', e);
+  }
+  return [...mockOrders];
+};
+
+const saveOrders = (orders: Order[]) => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+    }
+  } catch (e) {
+    console.warn('[Store] Failed to save orders to storage:', e);
+  }
+};
+
 export const useStore = create<AppState>((set, get) => ({
   selectedRoom: null,
   checkInDate: '',
   checkOutDate: '',
   guests: 2,
   calendarData: [],
-  orders: [],
+  orders: loadOrders(),
   isLoggedIn: true,
   userInfo: {
     name: '客家来客',
@@ -55,16 +82,20 @@ export const useStore = create<AppState>((set, get) => ({
   setCalendarData: (data) => set({ calendarData: data }),
 
   addOrder: (order) =>
-    set((state) => ({
-      orders: [order, ...state.orders]
-    })),
+    set((state) => {
+      const newOrders = [order, ...state.orders];
+      saveOrders(newOrders);
+      return { orders: newOrders };
+    }),
 
   updateOrderStatus: (orderId, status) =>
-    set((state) => ({
-      orders: state.orders.map((order) =>
+    set((state) => {
+      const newOrders = state.orders.map((order) =>
         order.id === orderId ? { ...order, status } : order
-      )
-    })),
+      );
+      saveOrders(newOrders);
+      return { orders: newOrders };
+    }),
 
   getOrderById: (orderId) => get().orders.find((o) => o.id === orderId),
 

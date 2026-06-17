@@ -40,7 +40,7 @@ export const rooms: Room[] = [
   {
     id: '3',
     name: '田螺坑家庭房',
-    description: ' spacious 家庭房，适合一家三口入住。房间采用木质装修，充满乡土气息，让您体验地道的客家生活。',
+    description: '宽敞的家庭房，适合一家三口入住。房间采用木质装修，充满乡土气息，让您体验地道的客家生活。',
     images: [
       'https://picsum.photos/id/1048/750/500',
       'https://picsum.photos/id/1040/750/500'
@@ -107,40 +107,6 @@ export const rooms: Room[] = [
   }
 ];
 
-export const generateCalendar = (year: number, month: number): RoomCalendar[] => {
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const calendar: RoomCalendar[] = [];
-  
-  for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(year, month - 1, day);
-    const dayOfWeek = date.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    const isHoliday = (month === 1 && day >= 1 && day <= 3) ||
-                      (month === 5 && day >= 1 && day <= 5) ||
-                      (month === 10 && day >= 1 && day <= 7);
-    
-    let basePrice = 388;
-    if (month >= 7 && month <= 8) basePrice = 588;
-    if (month === 10 || month === 2) basePrice = 488;
-    if (isWeekend) basePrice += 100;
-    if (isHoliday) basePrice += 200;
-    
-    const random = Math.random();
-    let status: 'available' | 'booked' | 'selected' = 'available';
-    if (random < 0.3) status = 'booked';
-    
-    calendar.push({
-      date: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
-      status,
-      price: basePrice,
-      isWeekend,
-      isHoliday
-    });
-  }
-  
-  return calendar;
-};
-
 export const pricingRules = {
   peakSeason: {
     months: [7, 8],
@@ -159,4 +125,157 @@ export const pricingRules = {
   },
   weekendPremium: 100,
   holidayPremium: 200
+};
+
+const CALENDAR_STORAGE_KEY = 'tulou_homestay_calendar';
+const BOOKED_DATES_STORAGE_KEY = 'tulou_homestay_booked_dates';
+
+const seededRandom = (seed: number): number => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
+const getIsHoliday = (month: number, day: number): boolean => {
+  return (month === 1 && day >= 1 && day <= 3) ||
+         (month === 5 && day >= 1 && day <= 5) ||
+         (month === 10 && day >= 1 && day <= 7);
+};
+
+export const calculateDatePrice = (basePrice: number, dateStr: string): number => {
+  const date = new Date(dateStr);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const dayOfWeek = date.getDay();
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+  const isHoliday = getIsHoliday(month, day);
+
+  let price = basePrice;
+
+  if (pricingRules.peakSeason.months.includes(month)) {
+    price = Math.floor(basePrice * pricingRules.peakSeason.priceMultiplier);
+  } else if (pricingRules.shoulderSeason.months.includes(month)) {
+    price = Math.floor(basePrice * pricingRules.shoulderSeason.priceMultiplier);
+  } else {
+    price = Math.floor(basePrice * pricingRules.offSeason.priceMultiplier);
+  }
+
+  if (isWeekend) price += pricingRules.weekendPremium;
+  if (isHoliday) price += pricingRules.holidayPremium;
+
+  return price;
+};
+
+const loadBookedDates = (): Set<string> => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem(BOOKED_DATES_STORAGE_KEY);
+      if (stored) {
+        return new Set(JSON.parse(stored));
+      }
+    }
+  } catch (e) {
+    console.warn('[Rooms] Failed to load booked dates:', e);
+  }
+  return new Set();
+};
+
+const saveBookedDates = (dates: Set<string>) => {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(BOOKED_DATES_STORAGE_KEY, JSON.stringify(Array.from(dates)));
+    }
+  } catch (e) {
+    console.warn('[Rooms] Failed to save booked dates:', e);
+  }
+};
+
+export const markDatesAsBooked = (startDate: string, endDate: string) => {
+  const bookedDates = loadBookedDates();
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  
+  for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+    const dateStr = d.toISOString().split('T')[0];
+    bookedDates.add(dateStr);
+  }
+  
+  saveBookedDates(bookedDates);
+};
+
+export const generateCalendar = (year: number, month: number, basePrice: number = 388): RoomCalendar[] => {
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const calendar: RoomCalendar[] = [];
+  const bookedDates = loadBookedDates();
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const date = new Date(year, month - 1, day);
+    const dayOfWeek = date.getDay();
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isHoliday = getIsHoliday(month, day);
+    
+    const price = calculateDatePrice(basePrice, dateStr);
+    
+    const seed = year * 10000 + month * 100 + day;
+    const random = seededRandom(seed);
+    let status: 'available' | 'booked' | 'selected' = 'available';
+    
+    if (bookedDates.has(dateStr)) {
+      status = 'booked';
+    } else if (random < 0.25) {
+      status = 'booked';
+    }
+    
+    calendar.push({
+      date: dateStr,
+      status,
+      price,
+      isWeekend,
+      isHoliday
+    });
+  }
+  
+  return calendar;
+};
+
+export const calculateStayTotal = (basePrice: number, checkInDate: string, checkOutDate: string): { total: number; nights: number; dailyPrices: { date: string; price: number }[] } => {
+  const start = new Date(checkInDate);
+  const end = new Date(checkOutDate);
+  const dailyPrices: { date: string; price: number }[] = [];
+  let total = 0;
+  let nights = 0;
+  
+  for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+    const dateStr = d.toISOString().split('T')[0];
+    const price = calculateDatePrice(basePrice, dateStr);
+    dailyPrices.push({ date: dateStr, price });
+    total += price;
+    nights++;
+  }
+  
+  return { total, nights, dailyPrices };
+};
+
+export const hasBookedDatesInRange = (startDate: string, endDate: string): boolean => {
+  const bookedDates = loadBookedDates();
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  
+  for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+    const dateStr = d.toISOString().split('T')[0];
+    if (bookedDates.has(dateStr)) {
+      return true;
+    }
+    
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const day = d.getDate();
+    const seed = year * 10000 + month * 100 + day;
+    const random = seededRandom(seed);
+    if (random < 0.25) {
+      return true;
+    }
+  }
+  
+  return false;
 };

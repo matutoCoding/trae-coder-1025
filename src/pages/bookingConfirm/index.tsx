@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, ScrollView, Button, Input, Textarea } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
@@ -6,6 +6,7 @@ import styles from './index.module.scss';
 import { formatPrice, getDaysDiff, showToast, showModal } from '@/utils';
 import { useStore } from '@/store/useStore';
 import { refundPolicy } from '@/data/orders';
+import { calculateStayTotal, hasBookedDatesInRange, markDatesAsBooked } from '@/data/rooms';
 
 const paymentMethods = [
   { id: 'wechat', name: '微信支付', desc: '推荐使用', icon: '💚' },
@@ -23,12 +24,18 @@ const BookingConfirmPage: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState('wechat');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const nights = getDaysDiff(checkInDate, checkOutDate);
-  const roomPrice = selectedRoom?.price || 0;
-  const totalRoomPrice = roomPrice * nights;
-  const discount = selectedRoom ? selectedRoom.originalPrice * nights - totalRoomPrice : 0;
-  const serviceFee = Math.floor(totalRoomPrice * 0.02);
-  const totalPrice = totalRoomPrice + serviceFee;
+  const priceCalculation = useMemo(() => {
+    if (!selectedRoom || !checkInDate || !checkOutDate) {
+      return { total: 0, nights: 0, dailyPrices: [] };
+    }
+    return calculateStayTotal(selectedRoom.price, checkInDate, checkOutDate);
+  }, [selectedRoom, checkInDate, checkOutDate]);
+
+  const { total, nights, dailyPrices } = priceCalculation;
+  const originalTotal = selectedRoom ? selectedRoom.originalPrice * nights : 0;
+  const discount = originalTotal - total;
+  const serviceFee = Math.floor(total * 0.02);
+  const totalPrice = total + serviceFee;
 
   const handleGuestsChange = (delta: number) => {
     const newGuests = guests + delta;
@@ -64,6 +71,11 @@ const BookingConfirmPage: React.FC = () => {
     if (!validateForm()) return;
     if (!selectedRoom || !checkInDate || !checkOutDate) return;
 
+    if (hasBookedDatesInRange(checkInDate, checkOutDate)) {
+      showToast('所选日期范围内有已预订日期，请重新选择', 'none');
+      return;
+    }
+
     const confirmed = await showModal(
       '确认预订',
       `您即将预订 ${selectedRoom.name}\n入住：${checkInDate}\n离店：${checkOutDate}\n共计 ${nights} 晚\n总价：¥${formatPrice(totalPrice)}\n\n确认提交订单吗？`
@@ -86,7 +98,7 @@ const BookingConfirmPage: React.FC = () => {
         checkInDate,
         checkOutDate,
         price: totalPrice,
-        status: 'pending' as const,
+        status: 'confirmed' as const,
         createTime: new Date().toISOString(),
         guestName,
         guestPhone,
@@ -95,6 +107,7 @@ const BookingConfirmPage: React.FC = () => {
       };
 
       addOrder(newOrder);
+      markDatesAsBooked(checkInDate, checkOutDate);
 
       console.log('[Booking] Order created:', newOrder);
 
@@ -267,16 +280,22 @@ const BookingConfirmPage: React.FC = () => {
           价格明细
         </Text>
         <View className={styles.priceBreakdown}>
+          {dailyPrices.map((item, idx) => (
+            <View key={idx} className={styles.priceItem}>
+              <Text className={styles.priceLabel}>{item.date.slice(5)} 入住</Text>
+              <Text className={styles.priceValue}>¥{formatPrice(item.price)}</Text>
+            </View>
+          ))}
           <View className={styles.priceItem}>
-            <Text className={styles.priceLabel}>{selectedRoom.name} × {nights}晚</Text>
-            <Text className={styles.priceValue}>¥{formatPrice(totalRoomPrice)}</Text>
+            <Text className={styles.priceLabel}>房费小计（{nights}晚）</Text>
+            <Text className={styles.priceValue}>¥{formatPrice(total)}</Text>
           </View>
           <View className={styles.priceItem}>
             <Text className={styles.priceLabel}>优惠折扣</Text>
-            <Text className={classnames(styles.priceValue, styles.discount)}>-¥{formatPrice(discount)}</Text>
+            <Text className={classnames(styles.priceValue, styles.discount)}>-¥{formatPrice(Math.max(0, discount))}</Text>
           </View>
           <View className={styles.priceItem}>
-            <Text className={styles.priceLabel}>服务费</Text>
+            <Text className={styles.priceLabel}>服务费（2%）</Text>
             <Text className={styles.priceValue}>¥{formatPrice(serviceFee)}</Text>
           </View>
         </View>

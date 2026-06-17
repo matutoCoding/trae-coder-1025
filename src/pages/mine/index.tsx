@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import { useStore } from '@/store/useStore';
-import { orders } from '@/data/orders';
 import { showToast, showModal } from '@/utils';
 
 const orderTabs = [
@@ -29,12 +28,12 @@ const quickLinks = [
 ];
 
 const MinePage: React.FC = () => {
-  const { userInfo, logout } = useStore();
+  const { userInfo, orders, logout } = useStore();
 
-  const pendingCount = orders.filter(o => o.status === 'pending').length;
-  const confirmedCount = orders.filter(o => o.status === 'confirmed').length;
-  const completedCount = orders.filter(o => o.status === 'completed').length;
-  const refundingCount = orders.filter(o => o.status === 'refunding').length;
+  const pendingCount = useMemo(() => orders.filter(o => o.status === 'pending').length, [orders]);
+  const confirmedCount = useMemo(() => orders.filter(o => o.status === 'confirmed').length, [orders]);
+  const completedCount = useMemo(() => orders.filter(o => o.status === 'completed').length, [orders]);
+  const refundingCount = useMemo(() => orders.filter(o => o.status === 'refunding').length, [orders]);
 
   const handleOrderTabClick = (status: string) => {
     console.log('[Mine] Order tab clicked:', status);
@@ -80,7 +79,7 @@ const MinePage: React.FC = () => {
             <Text className={styles.statLabel}>全部订单</Text>
           </View>
           <View className={styles.statItem}>
-            <Text className={styles.statValue}>2</Text>
+            <Text className={styles.statValue}>{pendingCount + confirmedCount}</Text>
             <Text className={styles.statLabel}>待入住</Text>
           </View>
           <View className={styles.statItem}>

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, Button, Input, Textarea } from '@tarojs/components';
+import React, { useState, useMemo } from 'react';
+import { View, Text, Image, ScrollView, Button, Textarea } from '@tarojs/components';
 import classnames from 'classnames';
 import styles from './index.module.scss';
-import { orders, statusMap, refundPolicy } from '@/data/orders';
+import { statusMap, refundPolicy } from '@/data/orders';
 import { showToast, showModal } from '@/utils';
 import { useStore } from '@/store/useStore';
+import type { Order } from '@/types';
 
 const refundReasons = [
   '行程变更',
@@ -16,21 +17,21 @@ const refundReasons = [
 ];
 
 const RefundPage: React.FC = () => {
-  const { updateOrderStatus } = useStore();
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const { orders, updateOrderStatus } = useStore();
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [selectedReason, setSelectedReason] = useState('');
   const [remark, setRemark] = useState('');
 
-  const refundableOrders = orders.filter(o =>
+  const refundableOrders = useMemo(() => orders.filter(o =>
     o.status === 'confirmed' || o.status === 'pending' || o.status === 'refunding'
-  );
+  ), [orders]);
 
-  const calculateRefundAmount = (order: any) => {
+  const calculateRefundAmount = (order: Order) => {
     if (order.status === 'refunding') return order.price;
     return Math.floor(order.price * 0.8);
   };
 
-  const handleApplyRefund = (order: any) => {
+  const handleApplyRefund = (order: Order) => {
     setSelectedOrder(order);
     setSelectedReason('');
     setRemark('');
@@ -56,7 +57,7 @@ const RefundPage: React.FC = () => {
     }
   };
 
-  const handleCancelRefund = async (order: any) => {
+  const handleCancelRefund = async (order: Order) => {
     const confirmed = await showModal(
       '撤销退订',
       '您确定要撤销退订申请吗？'
