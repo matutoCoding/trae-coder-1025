@@ -1,0 +1,419 @@
+@import '@/styles/theme';
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 160rpx;
+}
+
+.section {
+  background: #fff;
+  margin: 24rpx;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: $color-text-primary;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.roomCard {
+  display: flex;
+  gap: 20rpx;
+}
+
+.roomImage {
+  width: 200rpx;
+  height: 150rpx;
+  border-radius: 12rpx;
+}
+
+.roomInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.roomName {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: $color-text-primary;
+}
+
+.roomDesc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.roomPrice {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: $color-price;
+}
+
+.dateSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.dateInfo {
+  flex: 1;
+}
+
+.dateLabel {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.dateValue {
+  font-size: 30rpx;
+  color: $color-text-primary;
+  font-weight: 500;
+}
+
+.dateArrow {
+  font-size: 32rpx;
+  color: $color-primary;
+  margin: 0 24rpx;
+}
+
+.nightsInfo {
+  text-align: center;
+  padding: 16rpx 0;
+}
+
+.nightsValue {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: $color-primary;
+}
+
+.nightsLabel {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 8rpx;
+}
+
+.guestSection {
+  padding-top: 16rpx;
+}
+
+.formGroup {
+  margin-bottom: 24rpx;
+}
+
+.formLabel {
+  font-size: 26rpx;
+  color: $color-text-primary;
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.required {
+  color: #f44336;
+}
+
+.formInput {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 24rpx;
+  background: $color-bg-page;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: $color-text-primary;
+  box-sizing: border-box;
+}
+
+.formInput::placeholder {
+  color: #ccc;
+}
+
+.guestCounter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 88rpx;
+  padding: 0 24rpx;
+  background: $color-bg-page;
+  border-radius: 12rpx;
+}
+
+.counterLabel {
+  font-size: 28rpx;
+  color: $color-text-primary;
+}
+
+.counterControls {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.counterBtn {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 32rpx;
+  color: $color-primary;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+
+.counterBtn.disabled {
+  opacity: 0.4;
+}
+
+.counterValue {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: $color-text-primary;
+  min-width: 48rpx;
+  text-align: center;
+}
+
+.textarea {
+  width: 100%;
+  height: 160rpx;
+  padding: 20rpx 24rpx;
+  background: $color-bg-page;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: $color-text-primary;
+  box-sizing: border-box;
+}
+
+.textarea::placeholder {
+  color: #ccc;
+}
+
+.priceBreakdown {
+  padding: 8rpx 0;
+}
+
+.priceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.priceItem:last-child {
+  border-bottom: none;
+}
+
+.priceLabel {
+  font-size: 26rpx;
+  color: $color-text-secondary;
+}
+
+.priceValue {
+  font-size: 26rpx;
+  color: $color-text-primary;
+}
+
+.priceValue.discount {
+  color: #4CAF50;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0 0;
+  margin-top: 16rpx;
+  border-top: 2rpx dashed #ddd;
+}
+
+.totalLabel {
+  font-size: 28rpx;
+  color: $color-text-primary;
+  font-weight: bold;
+}
+
+.totalValue {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: $color-price;
+}
+
+.paymentSection {
+  padding-top: 8rpx;
+}
+
+.paymentOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.paymentOption {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: $color-bg-page;
+  border-radius: 12rpx;
+  border: 2rpx solid transparent;
+}
+
+.paymentOption.active {
+  border-color: $color-primary;
+  background: rgba(184, 134, 11, 0.05);
+}
+
+.paymentIcon {
+  font-size: 40rpx;
+  margin-right: 16rpx;
+}
+
+.paymentInfo {
+  flex: 1;
+}
+
+.paymentName {
+  font-size: 28rpx;
+  color: $color-text-primary;
+  font-weight: 500;
+}
+
+.paymentDesc {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.radioCircle {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 3rpx solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paymentOption.active .radioCircle {
+  border-color: $color-primary;
+}
+
+.radioInner {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background: $color-primary;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+
+.paymentOption.active .radioInner {
+  transform: scale(1);
+}
+
+.policyCard {
+  background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  margin: 0 24rpx 24rpx;
+}
+
+.policyTitle {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: $color-primary-dark;
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.policyText {
+  font-size: 24rpx;
+  color: $color-primary-dark;
+  line-height: 1.6;
+}
+
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+
+.totalInfo {
+  flex: 1;
+}
+
+.totalLabelBottom {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 4rpx;
+}
+
+.totalPriceBottom {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: $color-price;
+}
+
+.submitBtn {
+  padding: 24rpx 80rpx;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.submitBtn.disabled {
+  opacity: 0.5;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 120rpx 0;
+}
+
+.emptyIcon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+}
+
+.emptyText {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 32rpx;
+}
+
+.backBtn {
+  padding: 20rpx 48rpx;
+  background: $color-primary;
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 26rpx;
+}

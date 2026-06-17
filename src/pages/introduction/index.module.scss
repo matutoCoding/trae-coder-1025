@@ -1,0 +1,389 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+}
+
+.header {
+  position: relative;
+  height: 400rpx;
+
+  .headerImage {
+    width: 100%;
+    height: 100%;
+  }
+
+  .headerOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: $spacing-xl $page-padding;
+  }
+
+  .headerTitle {
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-bold;
+    color: $color-text-white;
+    margin-bottom: $spacing-sm;
+  }
+
+  .headerSubtitle {
+    font-size: $font-size-md;
+    color: rgba(255,255,255,0.9);
+  }
+}
+
+.scoreSection {
+  margin: -$spacing-xl $page-spacing $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  position: relative;
+  z-index: 10;
+
+  .scoreHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+  }
+
+  .scoreNumber {
+    font-size: 72rpx;
+    font-weight: $font-weight-bold;
+    color: $color-primary;
+    line-height: 1;
+    margin-right: $spacing-md;
+  }
+
+  .scoreInfo {
+    flex: 1;
+
+    .scoreLabel {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      margin-bottom: $spacing-xs;
+    }
+
+    .scoreStars {
+      font-size: $font-size-md;
+      color: $color-primary;
+      margin-bottom: $spacing-xs;
+    }
+
+    .scoreCount {
+      font-size: $font-size-sm;
+      color: $color-text-tertiary;
+    }
+  }
+
+  .scoreItems {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .scoreItem {
+    flex: 1;
+    text-align: center;
+
+    .itemLabel {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      margin-bottom: $spacing-xs;
+    }
+
+    .itemValue {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: $color-primary;
+    }
+  }
+}
+
+.tabBar {
+  display: flex;
+  background: $color-bg-card;
+  padding: 0 $page-padding;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1rpx solid $color-border;
+
+  .tabItem {
+    flex: 1;
+    height: 88rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+    position: relative;
+    transition: all $transition-fast;
+
+    &.active {
+      color: $color-primary;
+      font-weight: $font-weight-semibold;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 48rpx;
+        height: 6rpx;
+        background: $color-primary;
+        border-radius: 3rpx;
+      }
+    }
+
+    &:active {
+      opacity: 0.7;
+    }
+  }
+}
+
+.contentSection {
+  padding: $spacing-lg $page-padding;
+}
+
+.introCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-card;
+
+  .cardTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-md;
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: $spacing-sm;
+      font-size: $font-size-xl;
+    }
+  }
+
+  .cardImage {
+    width: 100%;
+    height: 300rpx;
+    border-radius: $radius-md;
+    margin-bottom: $spacing-md;
+  }
+
+  .cardContent {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    line-height: $line-height-loose;
+  }
+
+  .imageGallery {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+
+    .galleryImage {
+      flex: 1;
+      height: 180rpx;
+      border-radius: $radius-md;
+    }
+  }
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: $spacing-lg 0 $spacing-md;
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-right: $spacing-sm;
+  }
+}
+
+.spotList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.spotCard {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: $shadow-card-hover;
+  }
+
+  .spotImage {
+    width: 240rpx;
+    height: 180rpx;
+    flex-shrink: 0;
+  }
+
+  .spotInfo {
+    flex: 1;
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .spotName {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    @include text-ellipsis;
+  }
+
+  .spotDesc {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    @include text-ellipsis-multi(2);
+    margin-top: $spacing-xs;
+  }
+
+  .spotMeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $spacing-sm;
+  }
+
+  .spotDistance {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+
+  .spotPrice {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-price;
+  }
+}
+
+.reviewList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.reviewCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+
+  .reviewHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-md;
+  }
+
+  .reviewAvatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: $radius-round;
+    margin-right: $spacing-md;
+  }
+
+  .reviewInfo {
+    flex: 1;
+
+    .reviewerName {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      margin-bottom: $spacing-xs;
+    }
+
+    .reviewRating {
+      font-size: $font-size-sm;
+      color: $color-primary;
+    }
+  }
+
+  .reviewDate {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+
+  .reviewContent {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    line-height: $line-height-loose;
+    margin-bottom: $spacing-md;
+  }
+
+  .reviewImages {
+    display: flex;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+
+    .reviewImage {
+      width: 160rpx;
+      height: 160rpx;
+      border-radius: $radius-md;
+    }
+  }
+
+  .reviewReply {
+    background: $color-tag-bg;
+    border-radius: $radius-md;
+    padding: $spacing-md;
+
+    .replyTitle {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: $color-primary-dark;
+      margin-bottom: $spacing-xs;
+    }
+
+    .replyContent {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      line-height: $line-height-normal;
+    }
+
+    .replyTime {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+      margin-top: $spacing-xs;
+    }
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: $spacing-xl * 2;
+  color: $color-text-tertiary;
+
+  .emptyIcon {
+    font-size: 80rpx;
+    margin-bottom: $spacing-md;
+  }
+
+  .emptyText {
+    font-size: $font-size-md;
+  }
+}

@@ -1,0 +1,391 @@
+@import '@/styles/theme';
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: 24rpx;
+  padding-bottom: 120rpx;
+}
+
+.summaryCard {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  color: #fff;
+  box-shadow: 0 8rpx 32rpx rgba(184, 134, 11, 0.3);
+}
+
+.summaryTitle {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+}
+
+.summaryItem {
+  text-align: center;
+  padding: 16rpx 0;
+}
+
+.summaryValue {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.summaryLabel {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
+.section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.sectionTitle {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: $color-text-primary;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.tabs {
+  display: flex;
+  background: $color-bg-page;
+  border-radius: 12rpx;
+  padding: 6rpx;
+  gap: 4rpx;
+}
+
+.tab {
+  flex: 1;
+  padding: 12rpx 24rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: $color-text-secondary;
+  border-radius: 10rpx;
+  transition: all 0.3s;
+}
+
+.tabActive {
+  background: #fff;
+  color: $color-primary;
+  font-weight: bold;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+
+.chartContainer {
+  height: 360rpx;
+  position: relative;
+}
+
+.chartBars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 280rpx;
+  padding: 0 16rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.chartBar {
+  flex: 1;
+  margin: 0 6rpx;
+  background: linear-gradient(180deg, $color-primary-light 0%, $color-primary 100%);
+  border-radius: 8rpx 8rpx 0 0;
+  position: relative;
+  min-height: 10rpx;
+  transition: height 0.5s ease;
+}
+
+.chartBarLabel {
+  position: absolute;
+  bottom: -48rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20rpx;
+  color: #999;
+  white-space: nowrap;
+}
+
+.chartBarValue {
+  position: absolute;
+  top: -36rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20rpx;
+  color: $color-primary;
+  font-weight: bold;
+}
+
+.chartYAxis {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 280rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 0;
+}
+
+.chartYLabel {
+  font-size: 20rpx;
+  color: #999;
+  padding-right: 8rpx;
+}
+
+.statList {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.statItem:last-child {
+  border-bottom: none;
+}
+
+.statInfo {
+  flex: 1;
+}
+
+.statName {
+  font-size: 28rpx;
+  color: $color-text-primary;
+  margin-bottom: 8rpx;
+}
+
+.statBar {
+  height: 12rpx;
+  background: #f0f0f0;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.statBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-primary-light 0%, $color-primary 100%);
+  border-radius: 6rpx;
+  transition: width 0.5s ease;
+}
+
+.statValue {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: $color-price;
+  margin-left: 24rpx;
+  min-width: 160rpx;
+  text-align: right;
+}
+
+.statSub {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.metricCard {
+  background: $color-bg-page;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  text-align: center;
+}
+
+.metricValue {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: $color-primary;
+  margin-bottom: 8rpx;
+}
+
+.metricLabel {
+  font-size: 24rpx;
+  color: $color-text-secondary;
+}
+
+.forecastList {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.forecastItem {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background: $color-bg-page;
+  border-radius: 12rpx;
+}
+
+.forecastMonth {
+  width: 80rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: $color-primary;
+}
+
+.forecastBars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.forecastBarRow {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.forecastBarLabel {
+  width: 100rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.forecastBar {
+  flex: 1;
+  height: 16rpx;
+  background: #e0e0e0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.forecastBarFill {
+  height: 100%;
+  border-radius: 8rpx;
+}
+
+.forecastBarFill.revenue {
+  background: linear-gradient(90deg, #FFB74D 0%, $color-primary 100%);
+}
+
+.forecastBarFill.bookings {
+  background: linear-gradient(90deg, #81C784 0%, #4CAF50 100%);
+}
+
+.forecastValue {
+  width: 120rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  text-align: right;
+}
+
+.forecastValue.revenue {
+  color: $color-price;
+}
+
+.forecastValue.bookings {
+  color: #4CAF50;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 32rpx;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.legendDot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+}
+
+.legendDot.revenue {
+  background: $color-primary;
+}
+
+.legendDot.bookings {
+  background: #4CAF50;
+}
+
+.quickStats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.quickStatCard {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.quickStatLabel {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.quickStatValue {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: $color-text-primary;
+}
+
+.quickStatValue.primary {
+  color: $color-primary;
+}
+
+.quickStatValue.warning {
+  color: $color-price;
+}
+
+.quickStatTrend {
+  font-size: 22rpx;
+  color: #4CAF50;
+  margin-top: 4rpx;
+}
+
+.quickStatTrend.down {
+  color: #f44336;
+}

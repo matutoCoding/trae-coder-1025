@@ -1,0 +1,185 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+}
+
+.categoryTabs {
+  display: flex;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: $spacing-sm;
+
+  .tabItem {
+    flex: 1;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-round;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    transition: all $transition-fast;
+
+    &.active {
+      background: $color-primary;
+      color: $color-text-white;
+      font-weight: $font-weight-semibold;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+.diningList {
+  padding: $spacing-md $page-padding;
+}
+
+.diningCard {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+
+  &:active {
+    transform: scale(0.98);
+    transition: all $transition-fast;
+  }
+
+  .foodImage {
+    width: 200rpx;
+    height: 200rpx;
+    flex-shrink: 0;
+  }
+
+  .foodInfo {
+    flex: 1;
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .foodHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .foodName {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    @include text-ellipsis;
+    flex: 1;
+  }
+
+  .recommendTag {
+    font-size: $font-size-xs;
+    padding: 4rpx 12rpx;
+    background: $color-price;
+    color: $color-text-white;
+    border-radius: $radius-xs;
+    margin-left: $spacing-sm;
+    flex-shrink: 0;
+  }
+
+  .foodDesc {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    @include text-ellipsis-multi(2);
+    margin-top: $spacing-xs;
+  }
+
+  .foodFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $spacing-md;
+  }
+
+  .foodPrice {
+    .currency {
+      font-size: $font-size-md;
+      color: $color-price;
+      font-weight: $font-weight-semibold;
+    }
+
+    .price {
+      font-size: $font-size-xl;
+      color: $color-price;
+      font-weight: $font-weight-bold;
+    }
+
+    .unit {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+      margin-left: 4rpx;
+    }
+  }
+
+  .addBtn {
+    @include button-reset;
+    width: 64rpx;
+    height: 64rpx;
+    border-radius: $radius-round;
+    background: $color-primary;
+    color: $color-text-white;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+
+    &:active {
+      transform: scale(0.9);
+      background: $color-primary-dark;
+    }
+  }
+}
+
+.reserveSection {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  padding: $spacing-lg $page-padding;
+  box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .totalInfo {
+    .totalLabel {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+
+    .totalPrice {
+      font-size: $font-size-xxl;
+      color: $color-price;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  .reserveBtn {
+    @include button-reset;
+    height: $button-height-lg;
+    padding: 0 $spacing-xl * 2;
+    background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+    color: $color-text-white;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    border-radius: $radius-button;
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+}

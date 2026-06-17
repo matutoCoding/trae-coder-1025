@@ -1,0 +1,221 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 120rpx;
+}
+
+.userHeader {
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  padding: $spacing-xl $page-padding;
+  color: $color-text-white;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: $radius-round;
+  border: 4rpx solid rgba(255,255,255,0.3);
+  margin-right: $spacing-lg;
+}
+
+.userDetails {
+  flex: 1;
+
+  .userName {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-xs;
+  }
+
+  .userPhone {
+    font-size: $font-size-md;
+    opacity: 0.9;
+  }
+}
+
+.statsRow {
+  display: flex;
+  background: rgba(255,255,255,0.15);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+}
+
+.statItem {
+  flex: 1;
+  text-align: center;
+
+  &:not(:last-child) {
+    border-right: 1rpx solid rgba(255,255,255,0.2);
+  }
+
+  .statValue {
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-xs;
+  }
+
+  .statLabel {
+    font-size: $font-size-sm;
+    opacity: 0.9;
+  }
+}
+
+.orderSection {
+  margin: $spacing-lg $page-spacing;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sectionMore {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.orderTabs {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderTab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  .tabIcon {
+    font-size: 48rpx;
+    margin-bottom: $spacing-sm;
+  }
+
+  .tabLabel {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+
+  .tabBadge {
+    position: absolute;
+    top: -8rpx;
+    right: 16rpx;
+    background: $color-error;
+    color: $color-text-white;
+    font-size: 20rpx;
+    padding: 2rpx 8rpx;
+    border-radius: $radius-round;
+    min-width: 32rpx;
+    text-align: center;
+  }
+}
+
+.menuSection {
+  margin: 0 $page-spacing $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-lg;
+  border-bottom: 1rpx solid $color-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:active {
+    background: $color-bg-hover;
+  }
+
+  .menuIcon {
+    font-size: 36rpx;
+    margin-right: $spacing-md;
+    width: 48rpx;
+    text-align: center;
+  }
+
+  .menuText {
+    flex: 1;
+    font-size: $font-size-md;
+    color: $color-text-primary;
+  }
+
+  .menuArrow {
+    font-size: $font-size-lg;
+    color: $color-text-tertiary;
+  }
+}
+
+.quickLinks {
+  display: flex;
+  margin: 0 $page-spacing;
+  gap: $spacing-md;
+}
+
+.quickLink {
+  flex: 1;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  text-align: center;
+  box-shadow: $shadow-card;
+
+  &:active {
+    transform: scale(0.96);
+    transition: all $transition-fast;
+  }
+
+  .linkIcon {
+    font-size: 48rpx;
+    margin-bottom: $spacing-sm;
+  }
+
+  .linkText {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.logoutBtn {
+  @include button-reset;
+  margin: $spacing-xl $page-spacing;
+  height: $button-height-md;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-error;
+  font-weight: $font-weight-medium;
+  box-shadow: $shadow-card;
+
+  &:active {
+    background: $color-bg-hover;
+  }
+}

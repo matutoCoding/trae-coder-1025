@@ -1,0 +1,436 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFE0B2 0%, $color-bg-page 30%);
+  padding-bottom: 120rpx;
+}
+
+.bannerSection {
+  padding: $spacing-lg $page-padding 0;
+}
+
+.banner {
+  width: 100%;
+  height: 320rpx;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+}
+
+.bannerImage {
+  width: 100%;
+  height: 100%;
+}
+
+.quickEntry {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.entryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  &:active {
+    opacity: 0.7;
+    transform: scale(0.95);
+    transition: all $transition-fast;
+  }
+}
+
+.entryIcon {
+  font-size: 48rpx;
+  margin-bottom: $spacing-sm;
+}
+
+.entryText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.pricingCard {
+  margin: $spacing-lg $page-padding;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  color: $color-text-white;
+  box-shadow: $shadow-card;
+}
+
+.pricingTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-md;
+}
+
+.pricingItems {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pricingItem {
+  flex: 1;
+  text-align: center;
+
+  &:not(:last-child) {
+    border-right: 1rpx solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+.pricingLabel {
+  font-size: $font-size-sm;
+  opacity: 0.9;
+  margin-bottom: $spacing-xs;
+}
+
+.pricingValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.calendarSection {
+  margin: 0 $page-padding $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.calendarMonth {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.calendarNav {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.navBtn {
+  @include button-reset;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: $radius-round;
+  background: $color-bg-hover;
+  font-size: $font-size-lg;
+  color: $color-text-secondary;
+
+  &:active {
+    background: $color-primary-light;
+    color: $color-text-white;
+  }
+}
+
+.weekDays {
+  display: flex;
+  margin-bottom: $spacing-md;
+}
+
+.weekDay {
+  flex: 1;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-medium;
+}
+
+.daysGrid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dayCell {
+  width: 14.28%;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  &.available {
+    background: $color-bg-card;
+
+    &:active {
+      background: $color-tag-bg;
+    }
+  }
+
+  &.booked {
+    background: $color-bg-hover;
+
+    .dayNumber {
+      color: $color-text-disabled;
+      text-decoration: line-through;
+    }
+
+    .dayPrice {
+      color: $color-text-disabled;
+    }
+  }
+
+  &.selected {
+    background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+
+    .dayNumber,
+    .dayPrice {
+      color: $color-text-white;
+    }
+  }
+
+  &.selectedRange {
+    background: $color-tag-bg;
+  }
+
+  &.empty {
+    visibility: hidden;
+  }
+}
+
+.dayNumber {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.dayPrice {
+  font-size: $font-size-xs;
+  color: $color-price;
+  margin-top: 2rpx;
+}
+
+.dayTag {
+  position: absolute;
+  top: 2rpx;
+  right: 2rpx;
+  font-size: 18rpx;
+  padding: 0 6rpx;
+  border-radius: $radius-xs;
+  background: $color-price;
+  color: $color-text-white;
+}
+
+.selectedInfo {
+  margin-top: $spacing-lg;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-border;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selectedDates {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+
+  .highlight {
+    color: $color-primary;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.selectedDays {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.filterSection {
+  padding: 0 $page-spacing;
+  margin-bottom: $spacing-md;
+}
+
+.filterScroll {
+  white-space: nowrap;
+}
+
+.filterTag {
+  @include scroll-x-item(auto);
+  padding: $spacing-sm $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-round;
+  margin-right: $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  border: 1rpx solid $color-border;
+  transition: all $transition-fast;
+
+  &.active {
+    background: $color-primary;
+    color: $color-text-white;
+    border-color: $color-primary;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.roomList {
+  padding: 0 $page-padding;
+}
+
+.roomCard {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: $shadow-card-hover;
+  }
+}
+
+.roomImage {
+  width: 200rpx;
+  height: 160rpx;
+  border-radius: $radius-md;
+  flex-shrink: 0;
+}
+
+.roomInfo {
+  flex: 1;
+  margin-left: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.roomHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.roomName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.roomStatus {
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-xs;
+  margin-left: $spacing-sm;
+  flex-shrink: 0;
+
+  &.available {
+    background: rgba(76, 175, 80, 0.1);
+    color: $color-success;
+  }
+
+  &.booked {
+    background: rgba(158, 158, 158, 0.1);
+    color: $color-text-disabled;
+  }
+}
+
+.roomDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis-multi(2);
+  margin-top: $spacing-xs;
+}
+
+.roomTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-top: $spacing-sm;
+}
+
+.roomTag {
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  background: $color-tag-bg;
+  color: $color-primary-dark;
+  border-radius: $radius-xs;
+}
+
+.roomFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-sm;
+}
+
+.roomPrice {
+  .currency {
+    font-size: $font-size-md;
+    color: $color-price;
+    font-weight: $font-weight-semibold;
+  }
+
+  .price {
+    font-size: $font-size-xxl;
+    color: $color-price;
+    font-weight: $font-weight-bold;
+  }
+
+  .unit {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+    margin-left: 4rpx;
+  }
+
+  .originalPrice {
+    font-size: $font-size-xs;
+    color: $color-text-disabled;
+    text-decoration: line-through;
+    margin-left: $spacing-sm;
+  }
+}
+
+.bookBtn {
+  @include button-reset;
+  height: $button-height-sm;
+  padding: 0 $spacing-lg;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-button;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.96);
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: $spacing-xl * 2;
+  color: $color-text-tertiary;
+
+  .emptyIcon {
+    font-size: 80rpx;
+    margin-bottom: $spacing-md;
+  }
+
+  .emptyText {
+    font-size: $font-size-md;
+  }
+}
